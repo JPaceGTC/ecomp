@@ -3,7 +3,7 @@ from setuptools import setup
 setup(
     name='ecomp',
     version='0.1',
-    packages=['ecomp'],
+    packages=[''],
     url='',
     license='',
     author='jpace',
