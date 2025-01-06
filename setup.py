@@ -2,7 +2,8 @@ from setuptools import setup
 
 setup(
     name='ecomp',
-    version='0.1',
+    version='1',
+    packages=['/ecomp'],
     url='',
     license='',
     author='jpace',
