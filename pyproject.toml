@@ -1,6 +1,6 @@
 [project]
 name = "ecomp"
-description = "n42 preprocessor"
+description = "Catalog comparison tool"
 version = "0.1"
 authors = [
     { name = "Brian Pope", email = "brian.pope.4@us.af.mil" }
@@ -9,14 +9,8 @@ dynamic = ["dependencies"]
 
 requires-python = ">=3.8"
 [tool.setuptools.dynamic]
-dependencies = {file = ["requirements.txt"]}
+dependencies = ['ecomp @ git+ssh://git@https://github.com/JPaceGTC/ecomp.git']
 
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
-
-[tool.setuptools.packages.find]
-where = ["src/"]
-
-[project.scripts]
-n42_to_csv = "gtc_n42.cli:main"
