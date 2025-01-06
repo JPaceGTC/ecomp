@@ -1,9 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='ecomp',
     version='1',
-    packages=[''],
+    packages=find_packages(),
     url='',
     license='',
     author='jpace',
