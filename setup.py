@@ -4,9 +4,6 @@ setup(
     name='ecomp',
     version='1',
     packages=find_packages(),
-    url='',
-    license='',
+    url='https://github.com/JPaceGTC/ecomp',
     author='jpace',
-    author_email='',
-    description=''
 )
