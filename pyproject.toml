@@ -1,4 +1,3 @@
-<<<<<<< HEAD
 [project]
 name = "ecomp"
 description = "Catalog comparison tool"
@@ -14,20 +13,3 @@ requires-python = ">=3.8"
 [build-system]
 requires = ["setuptools >= 61.0"]
 build-backend = "setuptools.build_meta"
-=======
-[project]
-name = "ecomp"
-description = "Catalog comparison tool"
-version = "0.1"
-authors = [
-    { name = "Brian Pope", email = "brian.pope.4@us.af.mil" }
-]
-dynamic = ["dependencies"]
-
-requires-python = ">=3.8"
-[tool.setuptools.dynamic]
-
-[build-system]
-requires = ["setuptools >= 61.0"]
-build-backend = "setuptools.build_meta"
->>>>>>> 5779bdcb83103d7f144f10f2af83f03b1658b0a5
