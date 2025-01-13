@@ -1,0 +1,16 @@
+[project]
+name = "ecomp"
+description = "Catalog comparison tool"
+version = "0.1"
+authors = [
+    { name = "Brian Pope", email = "@" }
+]
+dynamic = ["dependencies"]
+
+requires-python = ">=3.8"
+[tool.setuptools.dynamic]
+dependencies = ['ecomp @ git+https://git@https://github.com/JPaceGTC/ecomp']
+
+[build-system]
+requires = ["setuptools >= 61.0"]
+build-backend = "setuptools.build_meta"
