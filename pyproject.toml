@@ -3,7 +3,7 @@ name = "ecomp"
 description = "Catalog comparison tool"
 version = "0.1"
 authors = [
-    { name = "Brian Pope", email = "@" }
+    { name = "Brian Pope", email = "brian.pope.4@us.af.mil" }
 ]
 dynamic = ["dependencies"]
 
