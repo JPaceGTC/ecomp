@@ -9,7 +9,6 @@ dynamic = ["dependencies"]
 
 requires-python = ">=3.8"
 [tool.setuptools.dynamic]
-dependencies = ['ecomp @ git+ssh://git@https://github.com/JPaceGTC/ecomp.git']
 
 [build-system]
 requires = ["setuptools >= 61.0"]
