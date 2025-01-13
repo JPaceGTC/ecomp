@@ -1,12 +1,9 @@
-from setuptools import setup
+from setuptools import setup, find_packages
 
 setup(
     name='ecomp',
-    version='0.1',
-    packages=['ecomp.py'],
-    url='',
-    license='',
+    version='1',
+    packages=find_packages(),
+    url='https://github.com/JPaceGTC/ecomp',
     author='jpace',
-    author_email='',
-    description=''
 )
