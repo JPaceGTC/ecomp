@@ -256,11 +256,11 @@ def compute_similarity_statistics(autobul: pd.DataFrame,
                 match_count = 1
                 nmatch_refall_autodefs.append(nmatch_refall_autodef)
                 # get the automated bulletin event location(s)
-                autobul_lat = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LAT_x'])
-                autobul_lon = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LON_x'])
+                autobul_lat = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LAT_x'])[0]
+                autobul_lon = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LON_x'])[0]
                 # get the reference bulletin event location(s)
-                refbul_lat = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LAT_y'])
-                refbul_lon = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LON_y'])
+                refbul_lat = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LAT_y'])[0]
+                refbul_lon = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LON_y'])[0]
                 
                 mdist, seaz, esaz = gps2dist_azimuth(autobul_lat, autobul_lon, refbul_lat, refbul_lon)
                 ddist.append(mdist/1000) # distance error, km
