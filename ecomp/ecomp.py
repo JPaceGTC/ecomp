@@ -40,10 +40,10 @@ script_dir = os.path.abspath(os.path.dirname(__file__)) # directory of script
 
 ########### REQUIRED PARAMETERS ###########
 # Bulletins consist of event (lat, lon, depth, time) and association/arrival (sta, phase, time) information
-autobul_csvfile = script_dir+'/UGEB_select_test.csv'
-refbul_csvfile = script_dir+'/UGEB_select_test.csv'
+autobul_csvfile = script_dir+'/ugeb_catalog.csv'
+refbul_csvfile = script_dir+'/ugeb_catalog.csv'
 # Output file
-outcsvfile = script_dir+'/ecomp_SEL3_vs_LEB.csv'
+outcsvfile = script_dir+'/ecomp_ugeb_catalog.csv'
 # Output verbosity bool; True to print all stats and output, False to just run script
 verbose = True
 ###########################################
@@ -116,7 +116,7 @@ def read_input_bulletins(autobul_csvfile: str,
 
 def merge_bulletins(autobul: pd.DataFrame, 
                     refbul: pd.DataFrame, 
-                    ArrTimeTol: float = 5.0,
+                    ArrTimeTol: float = 500.0,
                     verbose: bool = True) -> pd.DataFrame:
     """
     Parameters
@@ -149,12 +149,12 @@ def merge_bulletins(autobul: pd.DataFrame,
     # loop over stations in the reference bulletin and get the matching arrivals between the automated and the reference bulletins
     stalist = sorted(set(refbul['STA']))
     
-    if verbose: print("\tStations:")
+    #if verbose: print("\tStations:")
 
     bul_match = []
     
     for sta in stalist:
-        if verbose: print('\t\t'+sta)
+        #if verbose: print('\t\t'+sta)
         bul_match.append(pd.merge_asof(autobul[autobul['STA']==sta], refbul[refbul['STA']==sta], on="ATIME", direction="nearest", tolerance=ArrTimeTol))
         refbul_remaining = pd.merge_asof(refbul[refbul['STA']==sta], autobul[autobul['STA']==sta], on="ATIME", direction="nearest", tolerance=ArrTimeTol,suffixes=('_y','_x'))
         bul_match.append(refbul_remaining[refbul_remaining['STA_x'].isnull()])
@@ -164,7 +164,7 @@ def merge_bulletins(autobul: pd.DataFrame,
 def compute_similarity_statistics(autobul: pd.DataFrame, 
                                   refbul: pd.DataFrame, 
                                   bul_match: pd.DataFrame, 
-                                  LocDiffMean: float = 250.0, 
+                                  LocDiffMean: float = 250.0,
                                   LocDiffSig: float = 0.7, 
                                   distwgt: float = 0.5, 
                                   prewgt: float = 0.25, 
@@ -226,7 +226,6 @@ def compute_similarity_statistics(autobul: pd.DataFrame,
     
     # loop through each automated bulletin orid
     for auto_orid in tqdm(autobul_orid_list, disable=not(verbose)):
-
         match_count = 0
         # Use set to limit counts to unique arids; the merge process may produce duplicate rows
         
@@ -261,7 +260,8 @@ def compute_similarity_statistics(autobul: pd.DataFrame,
                 # get the reference bulletin event location(s)
                 refbul_lat = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LAT_y'])[0]
                 refbul_lon = pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['LON_y'])[0]
-                
+
+
                 mdist, seaz, esaz = gps2dist_azimuth(autobul_lat, autobul_lon, refbul_lat, refbul_lon)
                 ddist.append(mdist/1000) # distance error, km
                 ddepth.append(pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['DEPTH_x'])[0]-pd.unique(bul_match[(bul_match['ORID_x']==auto_orid) & (bul_match['ORID_y']==ref_orid)]['DEPTH_y'])[0])
@@ -455,8 +455,13 @@ def ecomp_write_and_stats(ecomp: pd.DataFrame,
 
 
 
-def ecomp(autocsv, refcsv, outputcsv, verbose=True):
+def ecomp(autocsv, refcsv, outputcsv, arrival_time_tol=5, location_tol=250.0, loc_diff=0.7, verbose=True):
     print("Start")
+    ArrTimeTol = arrival_time_tol
+    LocDiffMean = location_tol
+    LocDiffSig = loc_diff
+    print("Arrival time tolerance:", ArrTimeTol)
+    print("Location dif tolerance:", LocDiffMean)
     if len(autocsv.split('/')) < 1:
         print("No path given")
         script_dir = os.path.abspath(os.path.dirname(__file__))  # directory of script
@@ -478,9 +483,12 @@ def ecomp(autocsv, refcsv, outputcsv, verbose=True):
     if outcsvfile[-3:] != 'csv':
         outcsvfile = outcsvfile + '.csv'
 
+
+
     # Step 1: Read input bulletins
     if verbose: print('Step 1: Read input bulletins')
     autobul, refbul = read_input_bulletins(autobul_csvfile, refbul_csvfile)
+    print(autobul['ARID'])
 
     # Step 2: Join bulletins on arrival time
     if verbose: print('\nStep 2: Join bulletins on arrival time')
